@@ -1,5 +1,6 @@
 function player(){
 	this.hp = 100;
+	this.maxhp = 100;
 	this.speed = 1;
 	this.atk = 1;
 	this.xpos = 100;
@@ -19,6 +20,10 @@ function player(){
 	function setHP(hp)
 	{
 		this.hp = hp;
+	}
+	function refill()
+	{
+		this.hp = this.maxhp;
 	}
 	function setSpeed(speed)
 	{
