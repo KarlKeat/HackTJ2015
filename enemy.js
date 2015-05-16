@@ -155,10 +155,6 @@ function AttackPattern(can,dmg,num,spd)
 	{
 		return this.speed;
 	}
-	function move()
-	{
-		//to be implemented
-	}
 	function mutate()
 	{
 		if(!capable)
