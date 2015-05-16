@@ -3,8 +3,8 @@ function player(){
 	this.maxhp = 100;
 	this.speed = 1;
 	this.atk = 1;
-	this.xpos = 100;
-	this.ypos = 100;
+	this.xPos = 100;
+	this.yPos = 100;
 	function getHP()
 	{
 		return this.hp;
@@ -39,23 +39,23 @@ function player(){
 	}
 	function getxPos()
 	{
-		return this.xpos;
+		return this.xPos;
 	}
 	function getyPos()
 	{
-		return this.ypos;
+		return this.yPos;
 	}
 	function move()
 	{
 		var code = e.keyCode ? e.keyCode : e.which;
 		if (code == 37) //left
-			this.xpos = this.xpos - this.speed;
+			this.xPos = this.xPos - this.speed;
 		else if (code == 38) //up
-			this.ypos = this.ypos + this.speed;
+			this.yPos = this.yPos + this.speed;
 		else if (code == 39) //right
-			this.xpos = this.xpos + this.speed;
+			this.xPos = this.xPos + this.speed;
 		else if (code == 40) //down
-			this.ypos = this.ypos - this.speed;
+			this.yPos = this.yPos - this.speed;
 		return code;
 	}
 	function shoot()
@@ -68,18 +68,18 @@ function bullet(atk, speed, direct)
 	this.atk = atk;
 	this.speed = speed;
 	this.direction = direct;
-	this.xpos = player().getxPos();
-	this.ypos = player().getyPos();
+	this.xPos = player().getxPos();
+	this.yPos = player().getyPos();
 	function move()
 	{
 		if (code == 37) //left
-			this.xpos = this.xpos - this.speed;
+			this.xPos = this.xPos - this.speed;
 		if (code == 38) //up
-			this.ypos = this.ypos - this.speed;
+			this.yPos = this.yPos - this.speed;
 		if (code == 39) //right
-			this.xpos = this.xpos - this.speed;
+			this.xPos = this.xPos - this.speed;
 		if (code == 40) //down
-			this.ypos = this.ypos - this.speed;
+			this.yPos = this.yPos - this.speed;
 	}
 	function getAtk()
 	{
