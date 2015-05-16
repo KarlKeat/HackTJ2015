@@ -1,11 +1,12 @@
 
-function Enemy(genome){
+function Enemy(genome,x,y){
 	this.maxhp = genome.getMaxHP();
 	this.hp = genome.getMaxHP();
 	this.speed = genome.getSpeed();
 	this.movPattern = genome.getMovPattern();
 	this.atkPattern = genome.getAtkPattern();
-
+	this.xPos = x;
+	this.yPos = y;
 	function getHP()
 	{
 		return this.hp;
@@ -41,6 +42,21 @@ function Enemy(genome){
 	function shoot()
 	{
 		//to be implemented
+	}
+	function isDead()
+	{
+		if(this.hp<=0)
+			return true;
+		else
+			return false;
+	}
+	function getXPos()
+	{
+		return xPos;
+	}
+	function getYPos()
+	{
+		return yPos;
 	}
 }
 function Genome(mhp,spd,mov,atk,dmg)
@@ -173,5 +189,22 @@ function AttackPattern(can,dmg,num,spd)
 				this.shotNumber++;
 			}
 		}
+	}
+}
+function MovementPattern(can,comseq)
+{
+	this.capable = can;
+	this.commandSequence = comseq;
+	function canFollow()
+	{
+		return capable;
+	}
+	function getCommandSequence()
+	{
+		return commandSequence;
+	}
+	function mutate()
+	{
+		var x = 
 	}
 }
