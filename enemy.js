@@ -1,4 +1,3 @@
-
 function Enemy(genome){
 	this.maxhp = genome.getMaxHP();
 	this.hp = genome.getMaxHP();
