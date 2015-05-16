@@ -1,13 +1,13 @@
 function shop(points, atk, speed, hp)
 {
 	int ptotal = points;
-	int atkcost = player().getAtk()*10;
-	int speedcost = player().getSpeed()*10;
+	int atkcost = atk*10;
+	int speedcost = speed*10;
 	function plusAtk()
 	{
 		if (points >= atkcost)
 		{
-			player().setAtk(atkcost/10 + 1);
+			player().setAtk(atk+1);
 			points -= atkcost;
 			atkcost += 10;
 		}
@@ -16,7 +16,7 @@ function shop(points, atk, speed, hp)
 	{
 		if (points >= speedcost)
 		{
-			player().setSpeed(speedcost/10 + 1);
+			player().setSpeed(speed+1);
 			points -= speedcost;
 			speedcost += 10;
 		}
