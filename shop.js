@@ -7,27 +7,25 @@ function shop(points, atk, speed, hp)
 	{
 		if (points >= atkcost)
 		{
-			player().setAtk(atk+1);
 			points -= atkcost;
 			atkcost += 10;
 		}
+		return atk + 1;
 	}
 	function plusSpeed()
 	{
 		if (points >= speedcost)
 		{
-			player().setSpeed(speed+1);
 			points -= speedcost;
 			speedcost += 10;
 		}
+		return speed + 1;
 	}
 	function plusHP()
 	{
 		if (points >= 10)
-		{
-			player().setHP(hp + 10);
 			points -= 10;
-		}
+		return hp + 10;
 	}
 	function close()
 	{
