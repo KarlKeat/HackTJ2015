@@ -1,3 +1,4 @@
+
 function Enemy(genome){
 	this.maxhp = genome.getMaxHP();
 	this.hp = genome.getMaxHP();
@@ -42,12 +43,13 @@ function Enemy(genome){
 		//to be implemented
 	}
 }
-function Genome(mhp,spd,mov,atk)
+function Genome(mhp,spd,mov,atk,dmg)
 {
 	this.maxhp = mhp;
 	this.speed = spd;
 	this.movPattern = mov;
 	this.atkPattern = atk;
+	this.damage = dmg;
 
 	function getMaxHP()
 	{
@@ -65,15 +67,18 @@ function Genome(mhp,spd,mov,atk)
 	{
 		return this.atkPattern;
 	}
-	
+	function getDamage()
+	{
+		return this.damage;
+	}
 	function mutate()
 	{
 		var x = Math.floor((Math.random()*5)+1);
 		if(x==1)
 		{
-			var plusorminus = Math.floor((Math.random()*2)+1);
+			var plusorminus = Math.floor((Math.random()*4)+1);
 			var size = Math.floor((Math.random()*20)+1);
-			if(plusorminus==1)
+			if(plusorminus!=1)
 			{
 				this.maxhp += size;
 			}
@@ -81,11 +86,21 @@ function Genome(mhp,spd,mov,atk)
 		x = Math.floor((Math.random()*5)+1);
 		if(x==1)
 		{
-			var plusorminus = Math.floor((Math.random()*2)+1);
+			var plusorminus = Math.floor((Math.random()*4)+1);
 			var size = Math.floor((Math.random()*5)+1);
-			if(plusorminus==1)
+			if(plusorminus!=1)
 			{
-				this.spd += size;
+				this.speed += size;
+			}
+		}
+		x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.damage += size;
 			}
 		}
 		this.atkPattern.mutate();
@@ -95,7 +110,7 @@ function Genome(mhp,spd,mov,atk)
 function AttackPattern(can,dmg,num,spd)
 {
 	this.capable = can;
-	this.damage = dmg;
+	this.rangedDamage = dmg;
 	this.shotNumber = num;
 	this.speed = spd;
 
@@ -103,7 +118,7 @@ function AttackPattern(can,dmg,num,spd)
 	{
 		return this.capable;
 	}
-	function getDamage()
+	function getRangedDamage()
 	{
 		return this.damage;
 	}
@@ -121,6 +136,33 @@ function AttackPattern(can,dmg,num,spd)
 	}
 	function mutate()
 	{
-		//to be implemented
+		if(!capable)
+		{
+			var x = Math.floor((Math.random()*20)+1);
+			if(x==1)
+				return;
+			else
+				capable = true;
+		}
+		var x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.speed += size;
+			}
+		}
+		x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.rangedDamage += size;
+			}
+		}
 	}
 }
