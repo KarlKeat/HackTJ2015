@@ -72,13 +72,13 @@ function bullet(atk, speed, direct)
 	this.yPos = player().getyPos();
 	function move()
 	{
-		if (code == 37) //left
+		if (this.direction == 37) //left
 			this.xPos = this.xPos - this.speed;
-		if (code == 38) //up
+		if (this.direction == 38) //up
 			this.yPos = this.yPos - this.speed;
-		if (code == 39) //right
+		if (this.direction == 39) //right
 			this.xPos = this.xPos - this.speed;
-		if (code == 40) //down
+		if (this.direction == 40) //down
 			this.yPos = this.yPos - this.speed;
 	}
 	function getAtk()
