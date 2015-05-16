@@ -5,30 +5,30 @@ function shop(points, atk, speed, hp)
 	int speedcost = speed*10;
 	function plusAtk()
 	{
-		if (points >= atkcost)
+		if (ptotal >= atkcost)
 		{
-			points -= atkcost;
+			ptotal -= atkcost;
 			atkcost += 10;
 		}
 		return atk + 1;
 	}
 	function plusSpeed()
 	{
-		if (points >= speedcost)
+		if (ptotal >= speedcost)
 		{
-			points -= speedcost;
+			ptotal -= speedcost;
 			speedcost += 10;
 		}
 		return speed + 1;
 	}
 	function plusHP()
 	{
-		if (points >= 10)
-			points -= 10;
+		if (ptotal >= 10)
+			ptotal -= 10;
 		return hp + 10;
 	}
 	function close()
 	{
-		return points;
+		return ptotal;
 	}
 }
