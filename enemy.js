@@ -164,5 +164,14 @@ function AttackPattern(can,dmg,num,spd)
 				this.rangedDamage += size;
 			}
 		}
+		x = Math.floor((Math.random()*20)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			if(plusorminus!=1)
+			{
+				this.shotNumber++;
+			}
+		}
 	}
 }
