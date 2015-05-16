@@ -7,6 +7,7 @@ function Enemy(genome,x,y){
 	this.atkPattern = genome.getAtkPattern();
 	this.xPos = x;
 	this.yPos = y;
+	this.lifespan = 0;
 	function getHP()
 	{
 		return this.hp;
@@ -57,6 +58,14 @@ function Enemy(genome,x,y){
 	function getYPos()
 	{
 		return yPos;
+	}
+	function incrementLifespan();
+	{
+		lifespan++;
+	}
+	function getLifespan()
+	{
+		return lifespan;
 	}
 }
 function Genome(mhp,spd,mov,atk,dmg)
@@ -205,6 +214,15 @@ function MovementPattern(can,comseq)
 	}
 	function mutate()
 	{
-		var x = 
+		var appendOrModify = Math.floor((Math.random()*3)+1);
+		var index = Math.floor(Math.random()*commandSequence.length);
+		var x = Math.floor((Math.random()*5)+1)
+		if(x>=3)
+		{
+			if(appendOrModify>2)
+			{
+
+			}
+		}
 	}
 }
