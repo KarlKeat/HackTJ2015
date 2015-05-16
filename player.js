@@ -62,6 +62,10 @@ function player(){
 	{
 		return bullet(atk, speed, move());
 	}
+	function trap()
+	{
+		return bullet(atk, 0, move());
+	}
 }
 function bullet(atk, speed, direct)
 {
