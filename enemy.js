@@ -59,7 +59,7 @@ function Enemy(genome,x,y){
 	{
 		return yPos;
 	}
-	function incrementLifespan();
+	function incrementLifespan()
 	{
 		lifespan++;
 	}
@@ -203,7 +203,7 @@ function AttackPattern(can,dmg,num,spd)
 function MovementPattern(can,comseq)
 {
 	this.capable = can;
-	this.commandSequence = comseq;
+	this.commandSequence = comseq; //Array of integers. 1 = up, 2 = right, 3 = down, 4 = left.
 	function canFollow()
 	{
 		return capable;
@@ -216,12 +216,18 @@ function MovementPattern(can,comseq)
 	{
 		var appendOrModify = Math.floor((Math.random()*3)+1);
 		var index = Math.floor(Math.random()*commandSequence.length);
-		var x = Math.floor((Math.random()*5)+1)
+		var x = Math.floor((Math.random()*5)+1);
+		var dir = Math.floor((Math.random()*4)+1);
 		if(x>=3)
 		{
 			if(appendOrModify>2)
 			{
-
+				//modify
+				commandSequence[index] = dir;
+			}
+			else
+			{
+				commandSequence.splice(index,0,dir)
 			}
 		}
 	}
