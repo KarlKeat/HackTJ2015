@@ -60,7 +60,7 @@ function player(){
 	}
 	function shoot()
 	{
-		var bullet = bullet(atk, speed, move());
+		return bullet(atk, speed, move());
 	}
 }
 function bullet(atk, speed, direct)
