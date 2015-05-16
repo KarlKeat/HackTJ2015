@@ -2,6 +2,8 @@ function player(){
 	this.hp = 100;
 	this.speed = 1;
 	this.atk = 1;
+	this.xpos = 100;
+	this.ypos = 100;
 	function getHP()
 	{
 		return this.hp;
@@ -32,7 +34,15 @@ function player(){
 	}
 	function move()
 	{
-		//to be implemented
+		var code = e.keyCode ? e.keyCode : e.which;
+		if (code == 37) //left
+			this.xpos = this.xpos - this.speed;
+		if (code == 38)
+			this.ypos = this.ypos + this.speed;
+		if (code == 39)
+			this.xpos = this.xpos + this.speed;
+		if (code == 40)
+			this.ypos = this.ypos - this.speed;
 	}
 	function shoot()
 	{
