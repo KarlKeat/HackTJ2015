@@ -47,7 +47,7 @@
 			function startScreen()
 			{
 				//Displays logo, click anywhere to start the game
-				ctx.drawImage("Graphics/TitleScreen.png",canvas.width,canvas.height);
+				ctx.drawImage(new Image("Graphics/TitleScreen.png"),canvas.width,canvas.height);
 				document.addEventListener("click",start,false);
 			}
 			function start()
@@ -423,7 +423,7 @@
 				}
 				function draw()
 				{
-					ctx.drawImage(sprite,xPos,yPos);
+					ctx.drawImage(new Image(sprite),xPos,yPos);
 				}
 			}
 			function bullet(atk, speed, xp, yp, direct, friend)
@@ -541,7 +541,7 @@
 					}
 					function draw()
 					{
-						ctx.drawImage(sprite,xPos,yPos);
+						ctx.drawImage(new Image(sprite),xPos,yPos);
 					}
 				}
 				function shoot()
