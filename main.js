@@ -1,6 +1,7 @@
 function game(){	
 	var enemies = []; //lists all the enemies in the game, can be editted within the functions (add, remove)
 	var projectiles = []; //lists all projectiles in the game
+	var deadEnemies = [];
 	var points = 0; //add when they defeat enemies, go to next round(set # of points)
 	var numEnemies = 20; //final
 	var levelHP = 10; //change every level, used to call generateEnemy
@@ -9,6 +10,7 @@ function game(){
 	var player = new player();
 	var time = 60;
 	var level = 1;
+	var ticks = 0;
 	var canvas = document.createElement("canvas");
 	var ctx = canvas.getContext("2d");
 	canvas.width = window.innerWidth;
@@ -17,14 +19,12 @@ function game(){
 
 	function start()
 	{
-		while(true)
-		window.setInterval(check, 100);
-
 		for(var i = 0; i < numEnemies; i++)
-		{
-
-			enemies.push(generateEnemy(1, 1));
-		}
+ 		{
+ 			enemies.push(generateEnemy(1, 1));
+ 		}
+ 		while(true)
+			window.setInterval(check, 100);
 	}
 	function draw()
 	{
@@ -37,6 +37,59 @@ function game(){
 			projectiles[x].draw(ctx);
 		}
 	}
+	function calcBestLifespan()
+ 	{
+ 		//gets called at the end of each level, calculates 5 best lifespans from each round and uses their genomes
+ 		var lifeArray = [deadEnemies[0], deadEnemies[1], deadEnemies[2], deadEnemies[3], deadEnemies[4]];
+ 		var minVal = lifeArray[0].getLifespan();
+ 		var minValCell = 0;
+ 		for(var i = 1; i < lifeArray.length; i++)
+ 			if(lifeArray[i].getLifespan() < minVal){
+ 				minVal = lifeArray[i].getLifespan();
+ 				minValCell = i;
+ 			}
+ 		for(var i = 5; i < deadEnemies.length; i++)
+ 		{
+ 			if(deadEnemies[i].getLifespan() > minVal)
+ 			{
+ 				lifeArray[minValCell] = deadEnemies[i];
+ 				//recalculate minVal and minValCell
+ 				for(var i = 0; i < lifeArray.length; i++)
+ 					if(lifeArray[i].getLifespan() < minVal){
+ 						minVal = lifeArray[i].getLifespan();
+ 						minValCell = i;
+ 					}
+ 			}
+ 		}
+ 		for(var i = 5; i < enemies.length; i++)
+ 		{
+ 			if(enemies[i].getLifespan() > minVal)
+ 			{
+ 				lifeArray[minValCell] = enemies[i];
+ 				//recalculate minVal and minValCell
+ 				for(var i = 0; i < lifeArray.length; i++)
+ 					if(lifeArray[i].getLifespan() < minVal){
+ 						minVal = lifeArray[i].getLifespan();
+ 						minValCell = i;
+ 				}
+ 			}
+ 		}
+ 		//take out all enemies (alive) that were alive for 5 or less seconds before the level ended & replace them w/ mutated ones
+ 		//call generateEnemy(genome) in the places where we take out the thingys above ^^ (randomly choose which of the 5 best genomes to use in param)
+ 		for(var i = 0; i < enemies.length; i++)
+ 		{
+ 			if(enemies[i].getLifespan() <= 5)
+ 			{
+ 				enemies[i] = generateEnemy(lifeArray[Math.floor(Math.random()*5)].getGenome());
+ 			}
+ 		}
+ 	}
+ 	function generateEnemy(genome)
+ 	{
+ 		var x = 1; //idk where on/off screen to generate the enemy
+ 		var y = 1; //^^^^
+ 		return new Enemy(genome.mutate(), x, y);
+ 	}
 	function generateEnemy(mhp, sp, dmg)
 	{
 		if(mhp < 5)
@@ -49,10 +102,10 @@ function game(){
 		else
 			var speed = Math.floor((Math.random()*(sp+5)) + (sp-5));
 
-		if(sp < 5)
-			var damage = Math.floor((Math.random()*(damage+5)) + 1);
+		if(dmg < 5)
+			var damage = Math.floor((Math.random()*(dmg+5)) + 1);
 		else
-			var damage = Math.floor((Math.random()*(damage+5)) + (damage-5));
+			var damage = Math.floor((Math.random()*(dmg+5)) + (dmg-5));
 
 		var mov = generateMov();
 
@@ -67,10 +120,18 @@ function game(){
 	}
 	function generateAtk(can, dmg, num, spd)
 	{
-		
-		var atk = new AttackPattern(can, dmg, num, spd)
+		var atk = new AttackPattern(can, dmg, num, spd);
 
-
+		if(dmg < 5)
+			var damage = Math.floor((Math.random()*(dmg+5)) + 1);
+		else
+			var damage = Math.floor((Math.random()*(dmg+5)) + (dmg-5));
+ 
+		if(spd < 5)
+			var speed = Math.floor((Math.random()*(spd+5)) + 1);
+		else
+			var speed = Math.floor((Math.random()*(spd+5)) + (spd-5));
+		var atk = new AttackPattern(can, dmg, num, spd);
 	}
 	function generateMov(can, comseq)
 	{
@@ -85,6 +146,7 @@ function game(){
 		level++;
 		timer();
 		check();
+		calcBestLifespan();
 	}
 	function timer(){
 		while(time != 0)
