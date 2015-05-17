@@ -7,7 +7,7 @@ function game(){
 				var levelHP = 10; //change every level, used to call generateEnemy
 				var levelSpeed = 10; //change every level, used to call generateEnemy
 				var myHP = 5; 
-				var player;
+				var player = new player();
 				var time = 60;
 				var level = 1;
 				var ticks = 0;
@@ -57,7 +57,6 @@ function game(){
 			 		{
 			 			enemies.push(generateEnemy(new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1)));
 			 		}
-			 		player = new player();
 			 		renderall();
 			 		while(!gameOver)
 						gameState = window.setInterval(check, 100);
@@ -399,7 +398,6 @@ function game(){
 							sprite = s3;
 						}
 						projectiles.push(new bullet(atk, speed, XPos, YPos, true, move()));
-						sprite = SpriteShoot
 						projectiles.push(new bullet(atk, speed, XPos, YPos, true, move));
 					}
 					this.trap = function trap()
@@ -427,6 +425,10 @@ function game(){
 						sprite = sprites[2];
 					else if (this.direction == 40) //down
 						sprite = sprites[3];
+					this.renderProj = function renderProj()
+					{
+						ctx.drawImage(new Image(sprite),this.XPos,this.YPos);
+					}
 					this.move = function move()
 					{
 						if (this.direction == 37) //left
