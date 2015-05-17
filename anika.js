@@ -47,7 +47,7 @@ function game(){
 					var img = new Image(canvas.width, canvas.height);
 					img.src = "Graphics/TitleScreen.png";
 					ctx.drawImage(img,0,0);
-					document.addEventListener("click",start());
+					document.addEventListener("click",start(), false);
 				}
 				function start()
 				{
