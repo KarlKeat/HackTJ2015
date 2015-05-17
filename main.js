@@ -199,7 +199,7 @@ function game(){
 		//check if unfriendly projectile hits player
 		for(var i = 0; i < projectiles.length; i++)
 		{
-			if (!projectiles[i].isFriendly() && (projectiles[i].getLength()/2 + projectiles[i].getXPos() > player.getXPos() - 24 || projectiles[i].getWidth()/2 + projectiles[i].getYPos() > player.getYPos() - 13));
+			if (projectiles[i].isFriendly() && (projectiles[i].getLength()/2 + projectiles[i].getXPos() > player.getXPos() - 24 || projectiles[i].getWidth()/2 + projectiles[i].getYPos() > player.getYPos() - 13));
 				{
 					player.setHP(player.getHP() - projectiles[i].getAtk());	
 					deleteProjectiles.push(i);
