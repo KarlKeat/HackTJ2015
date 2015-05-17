@@ -66,7 +66,7 @@
 			 		while(!gameOver)
 						window.setInterval(check, 100);
 				}
-				this.renderall = function()
+				function renderall()
 				{
 					for(var x = 0;x<enemies.length;x++)
 					{
@@ -305,7 +305,7 @@
 					s4 = "Graphics/PlayerShoot4.png";
 					i4 = "Graphics/PlayerIdle4.png";
 					sprite = "Graphics/PlayerIdle1.png";
-					this.renderall= function()
+					function renderall()
 					{
 						var l = new Image();
 						l.src = sprite;
