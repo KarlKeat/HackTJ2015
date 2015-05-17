@@ -397,7 +397,6 @@ function game(){
 		}
 		function shoot()
 		{
-<<<<<<< HEAD
 			if (direction == 4) //left
 			{
 				sprite = s4;
