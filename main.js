@@ -157,13 +157,6 @@ function game(){
 			window.setInterval(function(){time--;},100); //what # should be here so that it decreases every second
 		shop();
 	}
-	function decreaseHP()
-	{
-		//if = 0, game ends //decreases through collisions + combat
-		myHP-=5;
-		if(myHP <= 0)
-			endGame();
-	}
 	function check()
 	{
 		var deleteProjectiles = [];
