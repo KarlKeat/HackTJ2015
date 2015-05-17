@@ -469,6 +469,10 @@ function game(){
 			return lifespan;
 		}
 	}
+	function Genome()
+	{
+		return new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1);	
+	}
 	function Genome(mhp,spd,mov,atk,dmg)
 	{
 		this.maxhp = mhp;
