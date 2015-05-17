@@ -22,7 +22,6 @@ function game(){
 				init();
 				function init()
 				{
-					console.log("yo");
 					while(true)
 					{
 						enemies = []; //lists all the enemies in the game, can be editted within the functions (add, remove)
