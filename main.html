@@ -11,7 +11,7 @@
 				var levelHP = 10; //change every level, used to call generateEnemy
 				var levelSpeed = 10; //change every level, used to call generateEnemy
 				var myHP = 5; 
-				var player;
+				var player = new player();
 				var time = 60;
 				var level = 1;
 				var ticks = 0;
@@ -61,7 +61,6 @@
 			 		{
 			 			enemies.push(generateEnemy(new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1)));
 			 		}
-			 		player = new player();
 			 		renderall();
 			 		while(!gameOver)
 						window.setInterval(check, 100);
