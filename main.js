@@ -14,10 +14,36 @@ function game(){
 	var lifeArray;
 	var canvas = document.createElement("canvas");
 	var ctx = canvas.getContext("2d");
+	var gameOver = false;
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	document.body.appendChild(canvas);
-
+	function init()
+	{
+		while(true)
+		{
+			var enemies = []; //lists all the enemies in the game, can be editted within the functions (add, remove)
+			projectiles = []; //lists all projectiles in the game
+			deadEnemies = [];
+			points = 0; //add when they defeat enemies, go to next round(set # of points)
+			numEnemies = 20; //final
+			levelHP = 10; //change every level, used to call generateEnemy
+			levelSpeed = 10; //change every level, used to call generateEnemy
+			myHP = 5; 
+			player;
+			time = 60;
+			level = 1;
+			ticks = 0;
+			gameOver = false;
+			lifeArray;
+			startScreen();
+		}
+	}
+	function startScreen()
+	{
+		//Displays logo, click anywhere to start the game
+		canvas.addEventListener("click",start());
+	}
 	function start()
 	{
 		for(var i = 0; i < numEnemies; i++)
@@ -27,7 +53,7 @@ function game(){
  		player = new player();
  		timer();
  		draw();
- 		while(true)
+ 		while(!gameOver)
 			window.setInterval(check, 100);
 	}
 	function draw()
@@ -164,8 +190,8 @@ function game(){
 		ticks++;
 		var deleteProjectiles = [];
 		if(myHP == 0){
-			endGame();
-			break;
+			gameOver = true;
+			return;
 		}
 		dead = [];
 		for(var x = 0; x<enemies.length;x++)
@@ -223,24 +249,6 @@ function game(){
 			if (enemies[i].getLength()/2 + enemies[i].getXPos() > player.getXPos() - 24 || enemies[i].getWidth()/2 + enemies[i].getYPos() > player.getYPos() - 13));
 					player.setHP(player.getHP() - enemies[i].getAtk());	
 		}
-	}
-	function endGame(){
-		//game over screen and option to restart?
-		 enemies = []; 
-		 points = 0; 
-		 numEnemies = 20; 
-		 levelHP = 10; 
-		 levelSpeed = 10; 
-		 myHP = 5; 
-		 player = new player();
-		 time = 60;
-		 level = 1;
-		 //prompt yes or no to restart
-		 var choice = prompt("Game over. Play again y/n?");
-		 if (choice == "y")
-		 	game();
-		 else
-		 	return; //lmao you're supposed to end the program here but idk how to do that and this is what stackoverflow said
 	}
 	function shop(points, atk, speed, hp)
 	{
