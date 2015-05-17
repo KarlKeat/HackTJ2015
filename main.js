@@ -11,6 +11,7 @@ function game(){
 	var time = 60;
 	var level = 1;
 	var ticks = 0;
+	var lifeArray;
 	var canvas = document.createElement("canvas");
 	var ctx = canvas.getContext("2d");
 	canvas.width = window.innerWidth;
@@ -43,7 +44,7 @@ function game(){
 	function calcBestLifespan()
  	{
  		//gets called at the end of each level, calculates 5 best lifespans from each round and uses their genomes
- 		var lifeArray = [deadEnemies[0], deadEnemies[1], deadEnemies[2], deadEnemies[3], deadEnemies[4]];
+ 		lifeArray = [deadEnemies[0], deadEnemies[1], deadEnemies[2], deadEnemies[3], deadEnemies[4]];
  		var minVal = lifeArray[0].getLifespan();
  		var minValCell = 0;
  		for(var i = 1; i < lifeArray.length; i++)
@@ -119,7 +120,7 @@ function game(){
 		var xPos = 1; //leaving it as constant for now 
 		var yPos = 1; //leaving it as contant for now
 
-		var e = new Enemy(new Genome(hp, speed, mov, atk, damage), xPos, yPos);
+		return new Enemy(new Genome(hp, speed, mov, atk, damage), xPos, yPos);
 
 	}
 	function generateAtk(can, dmg, num, spd)
@@ -179,7 +180,10 @@ function game(){
 		}
 		while(enemies.length < numEnemies)
 		{
-			enemies.push(generateEnemy(levelHP,levelSpeed));
+			if(level == 1)
+				enemies.push(new Enemy((new Genome()).mutate()));
+			else
+				enemies.push(generateEnemy(lifeArray[Math.floor(Math.random()*5)].getGenome()));
 		}
 		//check if unfriendly projectile and enemy hit
 		for(var i = 0; i < projectiles.length; i++)
