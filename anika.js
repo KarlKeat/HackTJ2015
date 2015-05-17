@@ -19,7 +19,6 @@ function game(){
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
 				document.body.appendChild(canvas);
-				console.log("hi");
 				init();
 				function init()
 				{
