@@ -304,9 +304,16 @@ function game(){
 		this.atk = 1;
 		this.xPos = 100;
 		this.yPos = 100;
-		spriteIdle = "Graphics/PlayerIdle.png";
-		SpriteShoot = "Graphics/PlayerShoot.png";
-		sprite = "Graphics/PlayerIdle.png";
+		this.direction = 1;
+		i1 = "Graphics/PlayerIdle1.png";
+		s1 = "Graphics/PlayerShoot1.png";
+		i2 = "Graphics/PlayerIdle2.png";
+		s2 = "Graphics/PlayerShoot2.png";
+		s3 = "Graphics/PlayerShoot3.png";
+		i3 = "Graphics/PlayerIdle3.png";
+		s4 = "Graphics/PlayerShoot4.png";
+		i4 = "Graphics/PlayerIdle4.png";
+		sprite = "Graphics/PlayerIdle1.png";
 		function getHP()
 		{
 			return this.hp;
@@ -318,6 +325,10 @@ function game(){
 		function getAtk()
 		{
 			return this.atk;
+		}
+		function getDirection()
+		{
+			return direction;
 		}
 		function setHP(hp)
 		{
@@ -352,18 +363,49 @@ function game(){
 			sprite = spriteIdle;
 			var code = e.keyCode ? e.keyCode : e.which;
 			if (code == 37) //left
+			{
 				this.xPos = this.xPos - this.speed;
+				direction = 4;
+				sprite = i4;
+			}
 			else if (code == 38) //up
+			{
 				this.yPos = this.yPos + this.speed;
+				direction = 1;
+				sprite = i1;
+			}
 			else if (code == 39) //right
+			{
 				this.xPos = this.xPos + this.speed;
+				direction = 2;
+				sprite = i2;
+			}
 			else if (code == 40) //down
+			{
 				this.yPos = this.yPos - this.speed;
+				direction = 3;
+				sprite = i3;
+			}
 			return code;
 		}
 		function shoot()
 		{
-			sprite = SpriteShoot
+			if (direction == 4) //left
+			{
+				sprite = s4;
+			}
+			else if (direction == 1) //up
+			{
+				sprite = s1;
+			}
+			else if (direction == 2) //right
+			{
+				sprite = s2;
+			}
+			else if (direction == 3) //down
+			{
+				sprite = s3;
+			}
 			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move()));
 		}
 		function trap()
@@ -453,6 +495,10 @@ function game(){
 		}
 		function move(tick, pxPos, pyPos) //takes in tick number and player x/ypos
 		{
+			if(tick%11==0)
+			{
+				
+			}
 			if (tick % 100 == 0)
 			{
 				 if (this.mov.getCapable()) //if follows player
