@@ -17,13 +17,16 @@
 			var level = 1;
 			var tick = 0;
 			var lifeArray;
+			var timeStart;
 			var canvas = document.getElementById('myCanvas');
 			var ctx = canvas.getContext("2d");
 			var gameOver = false;
 			var gameState;
+			var timeCurrent;
 			//canvas.width = window.innerWidth;
 			//canvas.height = window.innerHeight;
 			document.body.appendChild(canvas);
+			document.addEventListener("keydown", checkKey, false);
 			init();
 			function init()
 			{
@@ -59,13 +62,15 @@
 			{
 				for(var i = 0; i < numEnemies; i++)
 		 		{
-		 			enemies.push(generateEnemy(new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1)));
+		 			enemies.push(generateEnemy(new Genome(5,1,new MovementPattern(false,[1,1,2,2,3,3,4,4]),new AttackPattern(false,2,1,1),1)));
 		 		}
 		 		renderall();
-				gameState = window.setInterval(check, 100);
+				gameState = window.setInterval(check, 40);
+				
 			}
 			function renderall()
 			{
+				// console.log('renderall', enemies);
 				//var img = new Image(canvas.width, canvas.height);
 				//img.src = "Graphics/Grass.png";
 				//ctx.drawImage(img,0,0);
@@ -134,8 +139,8 @@
 		 	}
 		 	function generateEnemy(genome)
 		 	{
-		 		var x = 1; //idk where on/off screen to generate the enemy
-		 		var y = 1; //^^^^
+		 		var x = Math.floor((Math.random()*1000)+20); //idk where on/off screen to generate the enemy
+		 		var y = Math.floor((Math.random()*500)+20); //^^^^
 		 		//var z = genome.mutate();
 		 		var e = new Enemy(genome, x, y);
 		 		return e;
@@ -165,21 +170,21 @@
 				calcBestLifespan();
 			}
 			function checkKey(e){
-				if(e.keyCode == 32)
+				console.log("hi");
+				if(e.keyCode == 32){
 					player.shoot();
+				}
 				else
 					player.move(e.keyCode);
 			}
 			function check()
 			{
-				time--;
-				if(time==0)
+				if(timeCurrent-timeStart>=60000)
 				{
-					clearInterval(gameState);
+					//clearInterval(gameState);
 					shop();
 				}
 				renderall();
-				document.addEventListener("keydown", checkKey, false);
 				tick++;
 				var deleteProjectiles = [];
 				if(myHP == 0){
@@ -208,7 +213,7 @@
 				}
 				//enemies move
 				for (var i = 0; i < enemies.length; i++)
-					enemies[0].move(tick, player.XPos, player.YPos);
+					enemies[i].move(tick, player.XPos, player.YPos);
 				//check if unfriendly projectile and enemy hit
 				for(var i = 0; i < projectiles.length; i++)
 				{
@@ -216,7 +221,7 @@
 					{
 						if (!projectiles[i].isFriendly() && (projectiles[i].getLength()/2 + projectiles[i].getXPos() > enemies[j].getXPos() - 13 || projectiles[i].getWidth()/2 + projectiles[i].getYPos() > enemies[j].getYPos() - 13))
 						{
-							enemies[j].setHP(enemies[i].getHP() - projectiles[i].getAtk());	
+							enemies[j].setHP(enemies[i].getHP() - projectiles[i].getDamage());	
 							deleteProjectiles.push(i);
 						}
 					}
@@ -229,7 +234,7 @@
 				{
 					if (projectiles[i].isFriendly() && (projectiles[i].getLength()/2 + projectiles[i].getXPos() > player.getXPos() - 24 || projectiles[i].getWidth()/2 + projectiles[i].getYPos() > player.getYPos() - 13))
 						{
-							player.setHP(player.getHP() - projectiles[i].getAtk());	
+							player.setHP(player.getHP() - projectiles[i].getDamage());	
 							deleteProjectiles.push(i);
 						}
 				}
@@ -240,7 +245,7 @@
 				for (var i = 0; i < enemies.length; i++)
 				{
 					if(enemies[i].getLength()/2 + enemies[i].getXPos() > player.getXPos() - 24 || enemies[i].getWidth()/2 + enemies[i].getYPos() > player.getYPos() - 13)
-							player.setHP(player.getHP() - enemies[i].getAtk());	
+							player.setHP(player.getHP() - enemies[i].getDamage());	
 				}
 			}
 			function shop(points, atk, speed, hp)
@@ -292,7 +297,7 @@
 			function player(){
 				this.hp = 100;
 				this.maxhp = 100;
-				this.speed = 1;
+				this.speed = 10;
 				this.atk = 1;
 				this.XPos = 100;
 				this.YPos = 100;
@@ -310,6 +315,7 @@
 				{
 					var l = new Image();
 					l.src = sprite;
+					//console.log('rendering player', sprite);
 					ctx.drawImage(l,this.XPos,this.YPos);
 				}
 				this.getHP = function getHP()
@@ -366,7 +372,7 @@
 					}
 					else if (code == 38) //up
 					{
-						this.YPos = this.YPos + this.speed;
+						this.YPos = this.YPos - this.speed;
 						direction = 1;
 						sprite = i1;
 					}
@@ -378,10 +384,11 @@
 					}
 					else if (code == 40) //down
 					{
-						this.YPos = this.YPos - this.speed;
+						this.YPos = this.YPos + this.speed;
 						direction = 3;
 						sprite = i3;
 					}
+					//console.log(this.XPos, this.YPos);
 					return code;
 				}
 				this.shoot = function shoot()
@@ -402,17 +409,17 @@
 					{
 						sprite = s3;
 					}
-					projectiles.push(new bullet(atk, speed, this.XPos, this.YPos, true, move()));
-					projectiles.push(new bullet(atk, speed, this.XPos, this.YPos, true, move));
+					projectiles.push(new bullet(this.atkPattern, this.speed, this.XPos, this.YPos, true, this.move()));
+					projectiles.push(new bullet(this.atkPattern, this.speed, this.XPos, this.YPos, true, this.move));
 				}
 				this.trap = function trap()
 				{
-					projectiles.push(new bullet(atk, 0, this.XPos, this.YPos, true, move));
+					projectiles.push(new bullet(this.atkPattern, 0, this.XPos, this.YPos, true, move));
 				}
 				return this;
 			}
 			
-			function bullet(atk, speed, xp, yp, direct, friend)
+			function bullet(atk, speed, xp, yp, friend, direct)
 			{
 				this.atk = atk;
 				this.speed = speed;
@@ -420,19 +427,21 @@
 				this.XPos = xp;
 				this.YPos = yp;
 				this.friendly = friend;
-				sprites = ["Graphics/Bullet1.png","Graphics/Bullet2.png","Graphics/Bullet3.png","Graphics.Bullet4.png"]
-				sprite = sprites[0];
+				this.sprites = ["Graphics/Bullet1.png","Graphics/Bullet2.png","Graphics/Bullet3.png","Graphics.Bullet4.png"]
+				this.spriteProj = this.sprites[0];
 				if (this.direction == 37) //left
-					sprite = sprites[4];
+					this.spriteProj = this.sprites[4];
 				else if (this.direction == 38) //up
-					sprite = sprites[1];
+					this.spriteProj = this.sprites[1];
 				else if (this.direction == 39) //right
-					sprite = sprites[2];
+					this.spriteProj = this.sprites[2];
 				else if (this.direction == 40) //down
-					sprite = sprites[3];
+					this.spriteProj = this.sprites[3];
 				this.renderProj = function renderProj()
 				{
-					ctx.drawImage(new Image(sprite),this.XPos,this.YPos);
+					var img = new Image();
+					img.src = this.spriteProj;
+					ctx.drawImage(img,this.XPos,this.YPos);
 				}
 				this.move = function move()
 				{
@@ -451,7 +460,29 @@
 				}
 				this.isFriendly = function isFriendly()
 				{
-					return friendly;
+					return this.friendly;
+				}
+				this.getWidth = function getWidth()
+				{
+					if (this.direction==1||this.direction==3) 
+					{
+						return 10;
+					}
+					else
+					{
+						return 16;
+					}
+				}
+				this.getLength = function getLength()
+				{
+					if (this.direction==1||this.direction==3) 
+					{
+						return 16;
+					}
+					else
+					{
+						return 10;
+					}
 				}
 				return this;
 			}
@@ -465,11 +496,16 @@
 				this.YPos = y;
 				this.lifespan = 0;
 				this.direction = 1;
+				this.damage = genome.damage;
 				this.count = 1;
-				this.sprite = "Graphics/SlimeMove1.png";
+				this.spriteEnemy = "Graphics/SlimeMove1.png";
 				this.getHP = function getHP()
 				{
 					return this.hp;
+				}
+				this.getDamage = function getDamage()
+				{
+					return this.damage;
 				}
 				this.maxHP = function maxHP()
 				{
@@ -505,16 +541,13 @@
 				}
 				this.move = function move(tick, pXPos, pYPos) //takes in tick number and player x/YPos
 				{
-					if (tick % 1 == 0)
+					this.spriteEnemy = "Graphics/SlimeMove" + this.count + ".png";
+					this.count++;
+					if (this.count > 11)
+						this.count = 1;
+					if (tick % 11 == 0)
 					{
-						sprite = "Graphics/SlimeMove" + this.count + ".png";
-						this.count++;
-						if (this.count > 11)
-							this.count = 1;
-					}
-					if (tick % 100 == 0)
-					{
-						 if (this.mov.getCapable()) //if follows player
+						 if (this.movPattern.canFollow()) //if follows player
 						{
 							if (this.XPos < pXPos)
 								this.XPos = this.XPos + this.speed;
@@ -527,7 +560,7 @@
 						}
 						else
 						{
-							var move = this.move.getCommandSequence().splice(0, 1);
+							var move = this.movPattern.getCommandSequence().splice(0, 1);
 							if (move == 1) //north
 								this.YPos = this.YPos + this.speed;
 							else if (move === 2) //east
@@ -536,13 +569,17 @@
 								this.YPos = this.YPos - this.speed;
 							else //west
 								this.XPos = this.XPos - this.speed;
-							this.move.getCommandSequence().push(move);
+							this.movPattern.getCommandSequence().push(move);
 						}
 					}
 				}
 				this.renderEnemy = function renderEnemy()
 				{
-					ctx.drawImage(new Image(sprite),this.XPos,this.YPos);
+					var l = new Image();
+					l.src = this.spriteEnemy;
+					//console.log('rendeirng enemy', this.spriteEnemy, this.XPos, this.YPos);
+					// ctx.drawImage(new Image(sprite),this.XPos,this.YPos, 64, 64);
+					ctx.drawImage(l, this.XPos,this.YPos, 64, 64);
 				}
 				this.shoot = function shoot()
 				{
@@ -639,7 +676,7 @@
 			}
 			function AttackPattern(can,dmg,num,spd)
 			{
-				this.capable = can;
+				this.capable = true;
 				this.rangedDamage = dmg;
 				this.shotNumber = num;
 				this.speed = spd;
@@ -707,11 +744,11 @@
 				this.commandSequence = comseq; //Array of integers. 1 = up, 2 = right, 3 = down, 4 = left.
 				this.canFollow = function canFollow()
 				{
-					return capable;
+					return this.capable;
 				}
 				this.getCommandSequence = function getCommandSequence()
 				{
-					return commandSequence;
+					return this.commandSequence;
 				}
 				this.mutate = function mutate()
 				{
@@ -737,7 +774,7 @@
 		}
 		</script>
 	</head>
-	<body onload="game();">
+	<body onload="game();" style = "overflow-x: hidden; overflow-y: auto; position: fixed; overflow-y: scroll; width: 100%; " >
 		<canvas id="myCanvas" width = "2000" height = "2000"></canvas> 
 	</body>
 </html>
