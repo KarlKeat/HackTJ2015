@@ -160,6 +160,18 @@ function game(){
 				ptotal -= 10;
 			return hp + 10;
 		}
+		function getPointTotal()
+		{
+			return points;
+		}
+		function getAtkCost()
+		{
+			return atkcost;
+		}
+		function getSpeedCost()
+		{
+			return speedcost;
+		}
 		function close()
 		{
 			return ptotal;
