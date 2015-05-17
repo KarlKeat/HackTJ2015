@@ -1,5 +1,6 @@
 function game(){	
 	var enemies = []; //lists all the enemies in the game, can be editted within the functions (add, remove)
+	var projectiles = []; //lists all projectiles in the game
 	var points = 0; //add when they defeat enemies, go to next round(set # of points)
 	var numEnemies = 20; //final
 	var levelHP = 10; //change every level, used to call generateEnemy
@@ -8,6 +9,12 @@ function game(){
 	var player = new player();
 	var time = 60;
 	var level = 1;
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext("2d");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	document.body.appendChild(canvas);
+
 	function start()
 	{
 		while(true)
@@ -17,6 +24,17 @@ function game(){
 		{
 
 			enemies.push(generateEnemy(1, 1));
+		}
+	}
+	function draw()
+	{
+		for(var x = 0;x<enemies.length;x++)
+		{
+			enemies[x].draw(ctx);
+		}
+		for(var x = 0;x<projectiles.length;x++)
+		{
+			projectiles[x].draw(ctx);
 		}
 	}
 	function generateEnemy(mhp, sp, dmg)
@@ -210,20 +228,21 @@ function game(){
 		}
 		function shoot()
 		{
-			return bullet(atk, speed, move());
+			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move()));
 		}
 		function trap()
 		{
-			return bullet(atk, 0, move());
+			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move()));
 		}
 	}
-	function bullet(atk, speed, direct)
+	function bullet(atk, speed, xp, yp, direct, friend)
 	{
 		this.atk = atk;
 		this.speed = speed;
 		this.direction = direct;
-		this.xPos = player().getxPos();
-		this.yPos = player().getyPos();
+		this.xPos = xp;
+		this.yPos = yp);
+		this.friendly = friend;
 		function move()
 		{
 			if (this.direction == 37) //left
@@ -238,6 +257,10 @@ function game(){
 		function getAtk()
 		{
 			return this.atk;
+		}
+		function isFriendly()
+		{
+			return friendly;
 		}
 	}
 	function Enemy(genome,x,y){
