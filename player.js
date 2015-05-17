@@ -45,9 +45,9 @@ function player(){
 	{
 		return this.yPos;
 	}
-	function move()
+	function move(var code)
 	{
-		var code = e.keyCode ? e.keyCode : e.which;
+		//var code = e.keyCode ? e.keyCode : e.which;
 		if (code == 37) //left
 			this.xPos = this.xPos - this.speed;
 		else if (code == 38) //up
@@ -56,6 +56,8 @@ function player(){
 			this.xPos = this.xPos + this.speed;
 		else if (code == 40) //down
 			this.yPos = this.yPos - this.speed;
+		else if (code == 32) //space = shoot
+			shoot();
 		return code;
 	}
 	function shoot()
