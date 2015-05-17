@@ -241,7 +241,7 @@ function game(){
 		this.speed = speed;
 		this.direction = direct;
 		this.xPos = xp;
-		this.yPos = yp);
+		this.yPos = yp;
 		this.friendly = friend;
 		function move()
 		{
