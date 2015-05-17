@@ -7,7 +7,7 @@ function game(){
 	var levelHP = 10; //change every level, used to call generateEnemy
 	var levelSpeed = 10; //change every level, used to call generateEnemy
 	var myHP = 5; 
-	var player = new player();
+	var player;
 	var time = 60;
 	var level = 1;
 	var ticks = 0;
@@ -23,6 +23,9 @@ function game(){
  		{
  			enemies.push(generateEnemy(1, 1));
  		}
+ 		player = new player();
+ 		timer();
+ 		draw();
  		while(true)
 			window.setInterval(check, 100);
 	}
