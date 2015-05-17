@@ -263,15 +263,25 @@ function game(){
 		this.xPos = xp;
 		this.yPos = yp);
 		this.friendly = friend;
+		sprites = ["Graphics/Bullet1.png","Graphics/Bullet2.png","Graphics/Bullet3.png","Graphics.Bullet4.png"]
+		sprite = sprites[0];
+		if (this.direction == 37) //left
+			sprite = sprites[4];
+		else if (this.direction == 38) //up
+			sprite = sprites[1];
+		else if (this.direction == 39) //right
+			sprite = sprites[2];
+		else if (this.direction == 40) //down
+			sprite = sprites[3];
 		function move()
 		{
 			if (this.direction == 37) //left
 				this.xPos = this.xPos - this.speed;
-			if (this.direction == 38) //up
+			else if (this.direction == 38) //up
 				this.yPos = this.yPos - this.speed;
-			if (this.direction == 39) //right
+			else if (this.direction == 39) //right
 				this.xPos = this.xPos - this.speed;
-			if (this.direction == 40) //down
+			else if (this.direction == 40) //down
 				this.yPos = this.yPos - this.speed;
 		}
 		function getAtk()
