@@ -366,7 +366,7 @@ function game(){
 		{
 			return this.yPos;
 		}
-		function move()
+		function move(code)
 		{
 			sprite = spriteIdle;
 			if (code == 37) //left
