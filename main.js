@@ -86,6 +86,7 @@ function game(){
  				enemies[i] = generateEnemy(lifeArray[Math.floor(Math.random()*5)].getGenome());
  			}
  		}
+ 		deadEnemies = [];
  	}
  	function generateEnemy(genome)
  	{
