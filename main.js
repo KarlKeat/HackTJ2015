@@ -131,7 +131,6 @@ function game(){
 		 else
 		 	return; //lmao you're supposed to end the program here but idk how to do that and this is what stackoverflow said
 	}
-
 	function shop(points, atk, speed, hp)
 	{
 		int ptotal = points;
@@ -173,6 +172,9 @@ function game(){
 		this.atk = 1;
 		this.xPos = 100;
 		this.yPos = 100;
+		spriteIdle = "Graphics/PlayerIdle.png";
+		SpriteShoot = "Graphics/PlayerShoot.png";
+		sprite = "Graphics/PlayerIdle.png";
 		function getHP()
 		{
 			return this.hp;
@@ -215,6 +217,7 @@ function game(){
 		}
 		function move()
 		{
+			sprite = spriteIdle;
 			var code = e.keyCode ? e.keyCode : e.which;
 			if (code == 37) //left
 				this.xPos = this.xPos - this.speed;
@@ -228,11 +231,16 @@ function game(){
 		}
 		function shoot()
 		{
+			sprite = SpriteShoot
 			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move()));
 		}
 		function trap()
 		{
 			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move()));
+		}
+		function draw(context)
+		{
+			context.drawImage(sprite,xPos,yPos);
 		}
 	}
 	function bullet(atk, speed, xp, yp, direct, friend)
@@ -272,6 +280,7 @@ function game(){
 		this.xPos = x;
 		this.yPos = y;
 		this.lifespan = 0;
+		this.direction = 1;
 		function getHP()
 		{
 			return this.hp;
@@ -300,13 +309,13 @@ function game(){
 		{
 			this.speed = x;
 		}
-		function move()
+		function move(tick) //takes in tick number
 		{
-			//to be implemented
+			//uses tick number to determine if it's in midair and which direction it's moving in
 		}
 		function shoot()
 		{
-			//to be implemented
+			projectiles.push(new bullet(atkPattern.getDamage(),atkPattern.getShotSpeed(),xPos,yPos,direction,false))
 		}
 		function isDead()
 		{
