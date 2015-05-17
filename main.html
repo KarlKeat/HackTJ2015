@@ -62,22 +62,22 @@
 			 			enemies.push(generateEnemy(new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1)));
 			 		}
 			 		player = new player();
-			 		timer();
-			 		draw();
+			 		renderall();
 			 		while(!gameOver)
 						window.setInterval(check, 100);
 				}
-				function draw()
+				this.draw = function()
 				{
 					for(var x = 0;x<enemies.length;x++)
 					{
-						enemies[x].draw();
+						enemies[x].renderall();
 					}
 					for(var x = 0;x<projectiles.length;x++)
 					{
-						projectiles[x].draw();
+						projectiles[x].renderall();
 					}
-					player.draw;
+					player.renderall();
+					noLoop();
 				}
 				function calcBestLifespan()
 			 	{
@@ -131,8 +131,8 @@
 			 	{
 			 		var x = 1; //idk where on/off screen to generate the enemy
 			 		var y = 1; //^^^^
+			 		//var z = genome.mutate();
 			 		var e = new Enemy(genome, x, y);
-			 		e.mutate();
 			 		return e;
 			 	}
 				function generateAtk(can, dmg, num, spd)
@@ -161,14 +161,8 @@
 					levelHP+=5;
 					levelSpeed+=5;
 					level++;
-					timer();
 					check();
 					calcBestLifespan();
-				}
-				function timer(){
-					while(time != 0)
-						window.setInterval(function(){time--;},100); //what # should be here so that it decreases every second
-					shop();
 				}
 				function checkKey(e){
 					if(e.keyCode == 32)
@@ -178,7 +172,12 @@
 				}
 				function check()
 				{
-					draw();
+					time--;
+					if(time==0)
+					{
+						shop();
+					}
+					renderall();
 					document.addEventListener("keydown", checkKey, false);
 					ticks++;
 					var deleteProjectiles = [];
@@ -306,6 +305,13 @@
 					s4 = "Graphics/PlayerShoot4.png";
 					i4 = "Graphics/PlayerIdle4.png";
 					sprite = "Graphics/PlayerIdle1.png";
+					this.draw= function()
+					{
+						var l = new Image();
+						l.src = sprite;
+						ctx.drawImage(l,this.xPos,this.yPos);
+						noLoop();
+					}
 					function getHP()
 					{
 						return this.hp;
@@ -321,7 +327,7 @@
 					function getDirection()
 					{
 						return direction;
-					}
+					
 					function setHP(hp)
 					{
 						this.hp = hp;
@@ -405,11 +411,8 @@
 					{
 						projectiles.push(new bullet(atk, 0, xPos, yPos, true, move));
 					}
-					function draw()
-					{
-						ctx.drawImage(new Image(sprite),xPos,yPos);
-					}
 				}
+				
 				function bullet(atk, speed, xp, yp, direct, friend)
 				{
 					this.atk = atk;
@@ -523,7 +526,7 @@
 								this.move.getCommandSequence().push(move);
 							}
 						}
-						function draw()
+						function renderall()
 						{
 							ctx.drawImage(new Image(sprite),xPos,yPos);
 						}
