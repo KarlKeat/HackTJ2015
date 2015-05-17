@@ -186,7 +186,10 @@ function game(){
 		shop();
 	}
 	function checkKey(e){
-		player.move(e.keyCode);
+		if(e.keyCode == 32)
+			player.shoot();
+		else
+			player.move(e.keyCode);
 	}
 	function check()
 	{
@@ -354,7 +357,6 @@ function game(){
 		function move()
 		{
 			sprite = spriteIdle;
-			var code = e.keyCode ? e.keyCode : e.which;
 			if (code == 37) //left
 				this.xPos = this.xPos - this.speed;
 			else if (code == 38) //up
@@ -368,11 +370,11 @@ function game(){
 		function shoot()
 		{
 			sprite = SpriteShoot
-			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move()));
+			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move));
 		}
 		function trap()
 		{
-			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move()));
+			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move));
 		}
 		function draw(context)
 		{
