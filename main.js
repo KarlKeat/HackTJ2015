@@ -61,12 +61,13 @@ function game(){
 	{
 		for(var x = 0;x<enemies.length;x++)
 		{
-			enemies[x].draw(ctx);
+			enemies[x].draw();
 		}
 		for(var x = 0;x<projectiles.length;x++)
 		{
-			projectiles[x].draw(ctx);
+			projectiles[x].draw();
 		}
+		player.draw;
 	}
 	function calcBestLifespan()
  	{
@@ -423,9 +424,9 @@ function game(){
 		{
 			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move));
 		}
-		function draw(context)
+		function draw()
 		{
-			context.drawImage(sprite,xPos,yPos);
+			ctx.drawImage(sprite,xPos,yPos);
 		}
 	}
 	function bullet(atk, speed, xp, yp, direct, friend)
@@ -476,6 +477,7 @@ function game(){
 		this.yPos = y;
 		this.lifespan = 0;
 		this.direction = 1;
+		this.sprite = "Graphics/SlimeMove1.png";
 		function getHP()
 		{
 			return this.hp;
@@ -506,18 +508,12 @@ function game(){
 		}
 		function move(tick, pxPos, pyPos) //takes in tick number and player x/ypos
 		{
-<<<<<<< HEAD
-			if(tick%11==0)
-			{
-				
-=======
 			if (tick % 10 == 0)
 			{
-				ctx.drawImage("Graphics/SlimeMove" + this.count + ".png");
+				sprite = "Graphics/SlimeMove" + this.count + ".png";
 				this.count++;
 				if (this.count > 11)
 					this.count = 1;
->>>>>>> origin/master
 			}
 			if (tick % 100 == 0)
 			{
@@ -545,6 +541,10 @@ function game(){
 						this.xPos = this.xPos - this.speed;
 					this.move.getCommandSequence().push(move);
 				}
+			}
+			function draw()
+			{
+				ctx.drawImage(sprite,xPos,yPos);
 			}
 		}
 		function shoot()
