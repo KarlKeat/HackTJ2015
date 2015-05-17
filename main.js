@@ -160,6 +160,8 @@ function game(){
 	}
 	function check()
 	{
+		draw();
+		ticks++;
 		var deleteProjectiles = [];
 		if(myHP == 0){
 			endGame();
