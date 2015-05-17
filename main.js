@@ -166,10 +166,24 @@ function game(){
 	}
 	function check()
 	{
-		var deleteProjectiles = [];
+			var deleteProjectiles = [];
 		if(myHP == 0){
 			endGame();
-			break;
+			break;{
+
+		}
+		dead = [];
+		for(var x = 0; x<enemies.length;x++)
+		{
+			if(enemies[x].getHP()<=0)
+			{
+				deadEnemies.push(enemies[x]);
+				dead.push(x);
+			}
+		}
+		for(int x = 0; x<dead.length;x++)
+		{
+			enemies.splice(x,1);
 		}
 		while(enemies.length < numEnemies)
 		{
