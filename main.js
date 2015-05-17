@@ -42,7 +42,7 @@ function game(){
 	function startScreen()
 	{
 		//Displays logo, click anywhere to start the game
-		canvas.addEventListener("click",start());
+		document.addEventListener("click",start(),false);
 	}
 	function start()
 	{
