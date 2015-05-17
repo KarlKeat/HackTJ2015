@@ -1,41 +1,25 @@
 function game(){	
 	var enemies = []; //lists all the enemies in the game, can be editted within the functions (add, remove)
-	var projectiles = []; //lists all projectiles in the game
 	var points = 0; //add when they defeat enemies, go to next round(set # of points)
 	var numEnemies = 20; //final
 	var levelHP = 10; //change every level, used to call generateEnemy
 	var levelSpeed = 10; //change every level, used to call generateEnemy
 	var myHP = 5; 
-	var player = new player();
+	var player;
 	var time = 60;
 	var level = 1;
-	var canvas = document.createElement("canvas");
-	var ctx = canvas.getContext("2d");
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
-	document.body.appendChild(canvas);
-
 	function start()
 	{
-		while(true)
-		window.setInterval(check, 100);
-
 		for(var i = 0; i < numEnemies; i++)
 		{
-
 			enemies.push(generateEnemy(1, 1));
 		}
-	}
-	function draw()
-	{
-		for(var x = 0;x<enemies.length;x++)
-		{
-			enemies[x].draw(ctx);
-		}
-		for(var x = 0;x<projectiles.length;x++)
-		{
-			projectiles[x].draw(ctx);
-		}
+		player = new player();
+		timer();
+		draw();
+		//actually start game
+		while(true)
+		window.setInterval(check, 100);
 	}
 	function generateEnemy(mhp, sp, dmg)
 	{
@@ -49,7 +33,7 @@ function game(){
 		else
 			var speed = Math.floor((Math.random()*(sp+5)) + (sp-5));
 
-		if(sp < 5)
+		if(dmg < 5)
 			var damage = Math.floor((Math.random()*(damage+5)) + 1);
 		else
 			var damage = Math.floor((Math.random()*(damage+5)) + (damage-5));
@@ -67,10 +51,16 @@ function game(){
 	}
 	function generateAtk(can, dmg, num, spd)
 	{
-		
+		if(dmg < 5)
+			var damage = Math.floor((Math.random()*(damage+5)) + 1);
+		else
+			var damage = Math.floor((Math.random()*(damage+5)) + (damage-5));
+
+		if(spd < 5)
+			var speed = Math.floor((Math.random()*(spd+5)) + 1);
+		else
+			var speed = Math.floor((Math.random()*(spd+5)) + (spd-5));
 		var atk = new AttackPattern(can, dmg, num, spd)
-
-
 	}
 	function generateMov(can, comseq)
 	{
@@ -85,6 +75,7 @@ function game(){
 		level++;
 		timer();
 		check();
+		draw();
 	}
 	function timer(){
 		while(time != 0)
@@ -108,28 +99,15 @@ function game(){
 		{
 			enemies.push(generateEnemy(levelHP,levelSpeed));
 		}
+		draw();
 		//check if player and enemy are in same position, if so, call decreaseHP()
 		for(var i = 0; i < 20; i++)
 			if(enemies[i].getXPos() == player.getXPos() && enemies[i].getYPos() == player.getYPos())
 				decreaseHP();
 	}
 	function endGame(){
-		//game over screen and option to restart?
-		 enemies = []; 
-		 points = 0; 
-		 numEnemies = 20; 
-		 levelHP = 10; 
-		 levelSpeed = 10; 
-		 myHP = 5; 
-		 player = new player();
-		 time = 60;
-		 level = 1;
-		 //prompt yes or no to restart
-		 var choice = prompt("Game over. Play again y/n?");
-		 if (choice == "y")
-		 	start();
-		 else
-		 	return; //lmao you're supposed to end the program here but idk how to do that and this is what stackoverflow said
+		player = new player();
+		//do later (after 1 am)
 	}
 
 	function shop(points, atk, speed, hp)
@@ -228,21 +206,20 @@ function game(){
 		}
 		function shoot()
 		{
-			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move()));
+			return bullet(atk, speed, move());
 		}
 		function trap()
 		{
-			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move()));
+			return bullet(atk, 0, move());
 		}
 	}
-	function bullet(atk, speed, xp, yp, direct, friend)
+	function bullet(atk, speed, direct)
 	{
 		this.atk = atk;
 		this.speed = speed;
 		this.direction = direct;
-		this.xPos = xp;
-		this.yPos = yp;
-		this.friendly = friend;
+		this.xPos = player().getxPos();
+		this.yPos = player().getyPos();
 		function move()
 		{
 			if (this.direction == 37) //left
@@ -257,10 +234,6 @@ function game(){
 		function getAtk()
 		{
 			return this.atk;
-		}
-		function isFriendly()
-		{
-			return friendly;
 		}
 	}
 	function Enemy(genome,x,y){
