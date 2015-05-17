@@ -69,7 +69,7 @@ function game(){
 					}
 					for(var x = 0;x<projectiles.length;x++)
 					{
-						//projectiles[x].renderProj();
+						projectiles[x].renderProj();
 					}
 					player.renderPlayer();
 				}
@@ -142,10 +142,6 @@ function game(){
 					else
 						var speed = Math.floor((Math.random()*(spd+5)) + (spd-5));
 					var atk = new AttackPattern(can, dmg, num, spd);
-				}
-				function generateMov(can, comseq)
-				{
-					//to be implemented
 				}
 				function nextLevel()
 				{
