@@ -1,109 +1,230 @@
+
 function Enemy(genome,x,y){
-	this.maxhp = genome.maxhp;
-	this.hp = genome.maxhp;
-	this.speed = genome.speed;
-	this.movPattern = genome.movPattern;
-	this.atkPattern = genome.atkPattern;
-	this.XPos = x;
-	this.YPos = y;
+	this.maxhp = genome.getMaxHP();
+	this.hp = genome.getMaxHP();
+	this.speed = genome.getSpeed();
+	this.movPattern = genome.getMovPattern();
+	this.atkPattern = genome.getAtkPattern();
+	this.xPos = x;
+	this.yPos = y;
 	this.lifespan = 0;
-	this.direction = 1;
-	this.sprite = "Graphics/SlimeMove1.png";
-	this.getHP = function getHP()
+	function getHP()
 	{
 		return this.hp;
 	}
-	this.maxHP = function maxHP()
+	function getMaxHP()
 	{
 		return this.maxhp;
 	}
-	this.getSpeed = function getSpeed()
+	function getSpeed()
 	{
 		return this.speed;
 	}
-	this.getMovPattern = function getMovPattern()
+	function getMovPattern()
 	{
 		return this.movPattern;
 	}
-	this.getAtkPattern = function getAtkPattern()
+	function getAtkPattern()
 	{
 		return this.atkPattern;
 	}
-	this.setHP = function setHP(x)
+	function setHP(x)
 	{
 		this.hp = x;
 	}
-	this.setSpeed = function setSpeed(x)
+	function setSpeed(x)
 	{
 		this.speed = x;
 	}
-	this.move = function move(tick, pXPos, pYPos) //takes in tick number and player x/YPos
+	function move()
 	{
-		if (tick % 10 == 0)
-		{
-			sprite = "Graphics/SlimeMove" + this.count + ".png";
-			this.count++;
-			if (this.count > 11)
-				this.count = 1;
-		}
-		if (tick % 100 == 0)
-		{
-			 if (this.mov.getCapable()) //if follows player
-			{
-				if (this.XPos < pXPos)
-					this.XPos = this.XPos + this.speed;
-				if (this.YPos < pYPos)
-					this.YPos = this.YPos + this.speed;
-				if (this.XPos > pXPos)
-					this.XPos = this.XPos - this.speed;
-				if (this.YPos > pYPos)
-					this.YPos = this.YPos - this.speed;
-			}
-			else
-			{
-				var move = this.move.getCommandSequence().splice(0, 1);
-				if (move == 1) //north
-					this.YPos = this.YPos + this.speed;
-				else if (move === 2) //east
-					this.XPos = this.XPos + this.speed;
-				else if (move === 3) //south
-					this.YPos = this.YPos - this.speed;
-				else //west
-					this.XPos = this.XPos - this.speed;
-				this.move.getCommandSequence().push(move);
-			}
-		}
+		//to be implemented
 	}
-	this.renderEnemy = function renderEnemy()
+	function shoot()
 	{
-		ctx.drawImage(new Image(sprite),this.XPos,this.YPos);
+		//to be implemented
 	}
-	this.shoot = function shoot()
-	{
-		projectiles.push(new bullet(atkPattern.getDamage(),atkPattern.getShotSpeed(),this.XPos,this.YPos,direction,false));
-	}
-	this.isDead = function isDead()
+	function isDead()
 	{
 		if(this.hp<=0)
 			return true;
 		else
 			return false;
 	}
-	this.getXPos = function getXPos()
+	function getXPos()
 	{
-		return XPos;
+		return xPos;
 	}
-	this.getYPos = function getYPos()
+	function getYPos()
 	{
-		return YPos;
+		return yPos;
 	}
-	this.incrementLifespan = function incrementLifespan()
+	function incrementLifespan()
 	{
 		lifespan++;
 	}
-	this.getLifespan = function getLifespan()
+	function getLifespan()
 	{
 		return lifespan;
 	}
-	return this;
+}
+function Genome(mhp,spd,mov,atk,dmg)
+{
+	this.maxhp = mhp;
+	this.speed = spd;
+	this.movPattern = mov;
+	this.atkPattern = atk;
+	this.damage = dmg;
+
+	function getMaxHP()
+	{
+		return this.maxhp;
+	}
+	function getSpeed()
+	{
+		return this.speed;
+	}
+	function getMovPattern()
+	{
+		return this.movPattern;
+	}
+	function getAtkPattern()
+	{
+		return this.atkPattern;
+	}
+	function getDamage()
+	{
+		return this.damage;
+	}
+	function mutate()
+	{
+		var x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*20)+1);
+			if(plusorminus!=1)
+			{
+				this.maxhp += size;
+			}
+		}
+		x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.speed += size;
+			}
+		}
+		x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.damage += size;
+			}
+		}
+		this.atkPattern.mutate();
+		this.movPattern.mutate();
+	}
+}
+function AttackPattern(can,dmg,num,spd)
+{
+	this.capable = can;
+	this.rangedDamage = dmg;
+	this.shotNumber = num;
+	this.speed = spd;
+
+	function canAttack()
+	{
+		return this.capable;
+	}
+	function getRangedDamage()
+	{
+		return this.damage;
+	}
+	function getShotNumber()
+	{
+		return this.shotNumber;
+	}
+	function getShotSpeed()
+	{
+		return this.speed;
+	}
+	function mutate()
+	{
+		if(!capable)
+		{
+			var x = Math.floor((Math.random()*20)+1);
+			if(x==1)
+				return;
+			else
+				capable = true;
+		}
+		var x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.speed += size;
+			}
+		}
+		x = Math.floor((Math.random()*5)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			var size = Math.floor((Math.random()*5)+1);
+			if(plusorminus!=1)
+			{
+				this.rangedDamage += size;
+			}
+		}
+		x = Math.floor((Math.random()*20)+1);
+		if(x==1)
+		{
+			var plusorminus = Math.floor((Math.random()*4)+1);
+			if(plusorminus!=1)
+			{
+				this.shotNumber++;
+			}
+		}
+	}
+}
+function MovementPattern(can,comseq)
+{
+	this.capable = can;
+	this.commandSequence = comseq; //Array of integers. 1 = up, 2 = right, 3 = down, 4 = left.
+	function canFollow()
+	{
+		return capable;
+	}
+	function getCommandSequence()
+	{
+		return commandSequence;
+	}
+	function mutate()
+	{
+		var appendOrModify = Math.floor((Math.random()*3)+1);
+		var index = Math.floor(Math.random()*commandSequence.length);
+		var x = Math.floor((Math.random()*5)+1);
+		var dir = Math.floor((Math.random()*4)+1);
+		if(x>=3)
+		{
+			if(appendOrModify>2)
+			{
+				//modify
+				commandSequence[index] = dir;
+			}
+			else
+			{
+				commandSequence.splice(index,0,dir)
+			}
+		}
+	}
 }
