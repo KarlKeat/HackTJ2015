@@ -185,9 +185,16 @@ function game(){
 			window.setInterval(function(){time--;},100); //what # should be here so that it decreases every second
 		shop();
 	}
+	function checkKey(e){
+		if(e.keyCode == 32)
+			player.shoot();
+		else
+			player.move(e.keyCode);
+	}
 	function check()
 	{
 		draw();
+		document.addEventListener("keydown", checkKey, false);
 		ticks++;
 		var deleteProjectiles = [];
 		if(myHP == 0){
@@ -361,7 +368,6 @@ function game(){
 		function move()
 		{
 			sprite = spriteIdle;
-			var code = e.keyCode ? e.keyCode : e.which;
 			if (code == 37) //left
 			{
 				this.xPos = this.xPos - this.speed;
@@ -390,6 +396,7 @@ function game(){
 		}
 		function shoot()
 		{
+<<<<<<< HEAD
 			if (direction == 4) //left
 			{
 				sprite = s4;
@@ -407,10 +414,14 @@ function game(){
 				sprite = s3;
 			}
 			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move()));
+=======
+			sprite = SpriteShoot
+			projectiles.push(new bullet(atk, speed, xPos, yPos, true, move));
+>>>>>>> origin/master
 		}
 		function trap()
 		{
-			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move()));
+			projectiles.push(new bullet(atk, 0, xPos, yPos, true, move));
 		}
 		function draw(context)
 		{
@@ -495,9 +506,18 @@ function game(){
 		}
 		function move(tick, pxPos, pyPos) //takes in tick number and player x/ypos
 		{
+<<<<<<< HEAD
 			if(tick%11==0)
 			{
 				
+=======
+			if (tick % 10 == 0)
+			{
+				ctx.drawImage("Graphics/SlimeMove" + this.count + ".png");
+				this.count++;
+				if (this.count > 11)
+					this.count = 1;
+>>>>>>> origin/master
 			}
 			if (tick % 100 == 0)
 			{
