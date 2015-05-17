@@ -166,6 +166,7 @@ function game(){
 	}
 	function check()
 	{
+		var deleteProjectiles = [];
 		if(myHP == 0){
 			endGame();
 			break;
@@ -174,10 +175,39 @@ function game(){
 		{
 			enemies.push(generateEnemy(levelHP,levelSpeed));
 		}
-		//check if player and enemy are in same position, if so, call decreaseHP()
-		for(var i = 0; i < numEnemies; i++)
-			if(enemies[i].getXPos() == player.getXPos() && enemies[i].getYPos() == player.getYPos())
-				decreaseHP();
+		//check if unfriendly projectile and enemy hit
+		for(var i = 0; i < projectiles.length; i++)
+		{
+			for (var j = 0; j < enemies.length; j++)
+			{
+				if (!projectiles[i].isFriendly() && (projectiles[i].getLength()/2 + projectiles[i].getXPos() > enemies[j].getXPos() - 13 || projectiles[i].getWidth()/2 + projectiles[i].getYPos() > enemies[j].getYPos() - 13));
+				{
+					enemies[j].setHP(enemies[i].getHP() - projectiles[i].getAtk());	
+					deleteProjectiles.push(i);
+				}
+			}
+		}
+		//removes projectiles that hit enemies
+		for (var i = 0; i < deleteProjectiles.length; i++)
+			projectiles = projectiles.splice(deleteProjectiles[i], 1);
+		//check if unfriendly projectile hits player
+		for(var i = 0; i < projectiles.length; i++)
+		{
+			if (!projectiles[i].isFriendly() && (projectiles[i].getLength()/2 + projectiles[i].getXPos() > player.getXPos() - 24 || projectiles[i].getWidth()/2 + projectiles[i].getYPos() > player.getYPos() - 13));
+				{
+					player.setHP(player.getHP() - projectiles[i].getAtk());	
+					deleteProjectiles.push(i);
+				}
+		}
+		//removes projectiles that hit enemies
+		for (var i = 0; i < deleteProjectiles.length; i++)
+			projectiles = projectiles.splice(deleteProjectiles[i], 1);
+		//checks if enemy hits player
+		for (var i = 0; i < enemies.length; i++)
+		{
+			if (enemies[i].getLength()/2 + enemies[i].getXPos() > player.getXPos() - 24 || enemies[i].getWidth()/2 + enemies[i].getYPos() > player.getYPos() - 13));
+					player.setHP(player.getHP() - enemies[i].getAtk());	
+		}
 	}
 	function endGame(){
 		//game over screen and option to restart?
