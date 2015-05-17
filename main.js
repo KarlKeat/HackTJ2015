@@ -109,7 +109,7 @@ function game(){
 			enemies.push(generateEnemy(levelHP,levelSpeed));
 		}
 		//check if player and enemy are in same position, if so, call decreaseHP()
-		for(var i = 0; i < 20; i++)
+		for(var i = 0; i < numEnemies; i++)
 			if(enemies[i].getXPos() == player.getXPos() && enemies[i].getYPos() == player.getYPos())
 				decreaseHP();
 	}
