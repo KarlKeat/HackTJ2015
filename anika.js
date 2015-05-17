@@ -15,6 +15,7 @@ function game(){
 				var canvas = document.getElementById('myCanvas');
 				var ctx = canvas.getContext("2d");
 				var gameOver = false;
+				var gameState;
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
 				document.body.appendChild(canvas);
@@ -41,7 +42,6 @@ function game(){
 						lifeArray;
 						startScreen();
 					}
-					//startScreen();
 				}
 				function startScreen()
 				{
@@ -60,7 +60,7 @@ function game(){
 			 		player = new player();
 			 		renderall();
 			 		while(!gameOver)
-						window.setInterval(check, 100);
+						gameState = window.setInterval(check, 100);
 				}
 				function renderall()
 				{
@@ -170,6 +170,7 @@ function game(){
 					time--;
 					if(time==0)
 					{
+						clearInterval(gameState);
 						shop();
 					}
 					renderall();
