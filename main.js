@@ -42,7 +42,8 @@ function game(){
 	function startScreen()
 	{
 		//Displays logo, click anywhere to start the game
-		document.addEventListener("click",start(),false);
+		ctx.drawImage("Graphics/TitleScreen.png",canvas.width,canvas.height);
+		document.addEventListener("click",start,false);
 	}
 	function start()
 	{
