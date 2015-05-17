@@ -187,6 +187,9 @@ function game(){
 			else
 				enemies.push(generateEnemy(lifeArray[Math.floor(Math.random()*5)].getGenome()));
 		}
+		//enemies move
+		for (int i = 0; i < enemies.length; i++)
+			enemies[0].move(tick, player.xPos, player.yPos);
 		//check if unfriendly projectile and enemy hit
 		for(var i = 0; i < projectiles.length; i++)
 		{
@@ -439,9 +442,35 @@ function game(){
 		{
 			this.speed = x;
 		}
-		function move(tick) //takes in tick number
+		function move(tick, pxPos, pyPos) //takes in tick number and player x/ypos
 		{
-			//uses tick number to determine if it's in midair and which direction it's moving in
+			if (tick % 100 == 0)
+			{
+				 if (this.mov.getCapable()) //if follows player
+				{
+					if (this.xPos < pxPos)
+						this.xPos = this.xPos + this.speed;
+					if (this.yPos < pyPos)
+						this.yPos = this.yPos + this.speed;
+					if (this.xPos > pxPos)
+						this.xPos = this.xPos - this.speed;
+					if (this.yPos > pyPos)
+						this.yPos = this.yPos - this.speed;
+				}
+				else
+				{
+					var move = this.move.getCommandSequence().splice(0, 1);
+					if (move == 1) //north
+						this.yPos = this.yPos + this.speed;
+					else if (move === 2) //east
+						this.xPos = this.xPos + this.speed;
+					else if (move === 3) //south
+						this.yPos = this.yPos - this.speed;
+					else //west
+						this.xPos = this.xPos - this.speed;
+					this.move.getCommandSequence().push(move);
+				}
+			}
 		}
 		function shoot()
 		{
