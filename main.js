@@ -457,6 +457,13 @@ function game(){
 		}
 		function move(tick, pxPos, pyPos) //takes in tick number and player x/ypos
 		{
+			if (tick % 10 == 0)
+			{
+				ctx.drawImage("Graphics/SlimeMove" + this.count + ".png");
+				this.count++;
+				if (this.count > 11)
+					this.count = 1;
+			}
 			if (tick % 100 == 0)
 			{
 				 if (this.mov.getCapable()) //if follows player
