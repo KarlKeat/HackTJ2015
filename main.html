@@ -27,7 +27,7 @@
 				function init()
 				{
 					console.log("yo");
-					while(true)
+					while(false)
 					{
 						var enemies = []; //lists all the enemies in the game, can be editted within the functions (add, remove)
 						projectiles = []; //lists all projectiles in the game
@@ -45,18 +45,21 @@
 						lifeArray;
 						startScreen();
 					}
+					startScreen();
 				}
 				function startScreen()
 				{
 					//Displays logo, click anywhere to start the game
-					ctx.drawImage(new Image("Graphics/TitleScreen.png"),canvas.width,canvas.height);
+					var img = new Image(canvas.width, canvas.height);
+					img.src = "Graphics/TitleScreen.png";
+					ctx.drawImage(img,0,0);
 					document.addEventListener("click",start,false);
 				}
 				function start()
 				{
 					for(var i = 0; i < numEnemies; i++)
 			 		{
-			 			enemies.push(generateEnemy(1, 1));
+			 			enemies.push(generateEnemy(new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1)));
 			 		}
 			 		player = new player();
 			 		timer();
@@ -128,31 +131,8 @@
 			 	{
 			 		var x = 1; //idk where on/off screen to generate the enemy
 			 		var y = 1; //^^^^
-			 		return new Enemy(genome.mutate(), x, y);
+			 		return (new Enemy(genome, x, y)).mutate;
 			 	}
-				function generateEnemy(mhp, sp, dmg)
-				{
-					if(mhp < 5)
-						var hp = Math.floor((Math.random()*(mhp+5)) + 1);
-					else
-						var hp = Math.floor((Math.random()*(mhp+5)) + (mhp-5));
-
-					if(sp < 5)
-						var speed = Math.floor((Math.random()*(sp+5)) + 1);
-					else
-						var speed = Math.floor((Math.random()*(sp+5)) + (sp-5));
-
-					if(dmg < 5)
-						var damage = Math.floor((Math.random()*(dmg+5)) + 1);
-					else
-						var damage = Math.floor((Math.random()*(dmg+5)) + (dmg-5));
-
-					var xPos = 1; //leaving it as constant for now 
-					var yPos = 1; //leaving it as contant for now
-
-					return new Enemy(new Genome(hp, speed, mov, atk, damage), xPos, yPos);
-
-				}
 				function generateAtk(can, dmg, num, spd)
 				{
 					var atk = new AttackPattern(can, dmg, num, spd);
@@ -220,7 +200,7 @@
 					while(enemies.length < numEnemies)
 					{
 						if(level == 1)
-							enemies.push(new Enemy((new Genome()).mutate()));
+							enemies.push(new Enemy((new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1)).mutate()));
 						else
 							enemies.push(generateEnemy(lifeArray[Math.floor(Math.random()*5)].getGenome()));
 					}
@@ -573,10 +553,6 @@
 					{
 						return lifespan;
 					}
-				}
-				function Genome()
-				{
-					return new Genome(5,1,new MovementPattern(false,"11223344"),new AttackPattern(false,2,1,1),1);	
 				}
 				function Genome(mhp,spd,mov,atk,dmg)
 				{
