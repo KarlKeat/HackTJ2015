@@ -96,8 +96,22 @@ function game(){
 				decreaseHP();
 	}
 	function endGame(){
-		player = new player();
-		//do later (after 1 am)
+		//game over screen and option to restart?
+		 enemies = []; 
+		 points = 0; 
+		 numEnemies = 20; 
+		 levelHP = 10; 
+		 levelSpeed = 10; 
+		 myHP = 5; 
+		 player = new player();
+		 time = 60;
+		 level = 1;
+		 //prompt yes or no to restart
+		 var choice = prompt("Game over. Play again y/n?");
+		 if (choice == "y")
+		 	start();
+		 else
+		 	return; //lmao you're supposed to end the program here but idk how to do that and this is what stackoverflow said
 	}
 
 	function shop(points, atk, speed, hp)
