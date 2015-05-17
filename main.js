@@ -223,7 +223,7 @@ function game(){
 		 //prompt yes or no to restart
 		 var choice = prompt("Game over. Play again y/n?");
 		 if (choice == "y")
-		 	start();
+		 	game();
 		 else
 		 	return; //lmao you're supposed to end the program here but idk how to do that and this is what stackoverflow said
 	}
