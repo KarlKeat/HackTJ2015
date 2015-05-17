@@ -185,9 +185,13 @@ function game(){
 			window.setInterval(function(){time--;},100); //what # should be here so that it decreases every second
 		shop();
 	}
+	function checkKey(e){
+		player.move(e.keyCode);
+	}
 	function check()
 	{
 		draw();
+		document.addEventListener("keydown", checkKey, false);
 		ticks++;
 		var deleteProjectiles = [];
 		if(myHP == 0){
